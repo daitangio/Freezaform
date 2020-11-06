@@ -13,7 +13,13 @@ First of all, the "freezer" command is responsible to create the correct terrafo
 
 Every icicle has a different state file and can be applied independently to others.
 
-You can switch environment with
+You can switch environment with 
+ freezer <envname>
+
+# Terragrunt
+
+Terragrunt is a more deep solution but freezer is less invasive and simpler to understand.
+
 
 # References
 [1] https://github.com/ozbillwang/terraform-best-practices#retrieve-state-meta-data-from-a-remote-backend
