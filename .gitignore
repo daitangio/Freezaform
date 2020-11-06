@@ -1,3 +1,4 @@
+**/freezer-config*.tf
 # Local .terraform directories
 **/.terraform/*
 
