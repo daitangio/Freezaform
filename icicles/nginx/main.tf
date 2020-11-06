@@ -9,9 +9,10 @@ variable "web_servers" {
      web2=8002
   }  
 }
+
 resource "docker_image" "nginx" {
   name         = "nginx:latest"
-  keep_locally = false
+  keep_locally = true
 }
 
 
@@ -23,7 +24,7 @@ resource "docker_image" "nginx" {
 resource "docker_container" "webservers" {
   for_each= var.web_servers
   image = docker_image.nginx.latest
-  name=format("%s",each.key)
+  name= join("-",  [ local.name_prefix, format("%s",each.key) ])
   ports {
     external= each.value
     internal=80
@@ -36,8 +37,8 @@ resource "docker_container" "webservers" {
   memory_swap=-1
 
   labels {
-    label="Terraform_Mantainer"
-    value=var.mantainer
+    label="Version"
+    value= join(" ", [ local.tf_git_version, local.name_prefix ])
   }
 
 
@@ -50,24 +51,19 @@ resource "docker_container" "webservers" {
     file="/etc/nginx/nginx.conf"
   }
 
+  upload {
+    source=join("/",  [ abspath(path.root),"/htdocs/index.html"])
+    file="/usr/share/nginx/html/index.html"
+  }
 
-/*
-  // Consolidate logging
-  // /var/log/nginx/
-  mounts {
-    source=join("/",  [ abspath(path.root), "logs",each.key])
-    type="bind"
-    target="/var/log/nginx"
-    read_only=false
-  }  
-*/
+
 
 }
 
 resource "docker_container" "webservers_via_count" {
   count=1
   image = docker_image.nginx.latest
-  name=format("webC-%s",count.index)
+  name=join("-",  [ local.name_prefix, format("webC-%s",count.index) ] )
   ports {
     external= (8100+count.index+1)
     internal=80
