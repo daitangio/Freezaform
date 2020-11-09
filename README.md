@@ -1,15 +1,14 @@
 # Freezaform
-A terraform-based setup with a thin tool to set up different environments on a docker layer. A simpler terragrunt
+A terraform-based setup with a thin tool to set up different environments on a docker layer.
 
-This projects is a small Proof of Concept on how to set up a terraform infrastructure which can be sub configured on different environaments with little effort
-
+This projects is a small Proof of Concept on how to set up a terraform infrastructure.
 The idea is taken from [1] and Terragrunt, but with an easier approach.
 
 # Why
-+ You can create a set of separated terraform modules called icicles (ghiaccioli)
++ You can create a set of separated terraform modules called icicles (ghiaccioli in Italian).
 + Every icicle can be configured to work on a different configuration
 + Every configutation has its state file. You can export data in a icicle and read in another (see https://github.com/ozbillwang/terraform-best-practices#retrieve-state-meta-data-from-a-remote-backend )
-+ We experienced some trouble with terrargunt (crash on windows and bugs) and we take a lighter approach. Also Freezaform depends only on bash and on terraform, and often bash is already installed.
++ We experienced some trouble with terrargunt (crash on windows and bugs) and we take a lighter approach. Also Freezaform depends only on bash and on terraform, and often bash is already installed (!)
 
 The example is based on a docker provider for simplicity, but can be extended to support industrial grade cloud providers as well.
 
