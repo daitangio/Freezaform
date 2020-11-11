@@ -11,13 +11,20 @@ SCRIPT_DIR=$(pwd)
 
 if [ $# == 0 ]; then
   echo Usage:
-  echo  freezer config_name
+  echo  freezer config_name \{plan\|apply\|destroy\}
   echo Where config_name can be one of
   for e in *-config.sh ; do
     echo -n ${e/-config.sh/} " "
   done
   exit 1
 fi
+
+
+if [ $# == 2 ]; then
+  TERRAFORM_CMD=$2
+fi
+
+
 
 CONFIG_NAME=$1
 TERRAFORM_MACRO_MODULES=${SCRIPT_DIR}/../icicles
@@ -93,9 +100,12 @@ locals {
 
 EOF
 
-        echo "Initializing ${STATE_FILE_NAME}"
+        # echo "Initializing ${STATE_FILE_NAME}"
         # Terraform init without questions
         # consider parallelizing it a bit        
         terraform init -reconfigure
+        test -v TERRAFORM_CMD && echo $0 Terraform $TERRAFORM_CMD onto $(pwd)        
+        test -v TERRAFORM_CMD && terraform $TERRAFORM_CMD
+        
     )
 done
